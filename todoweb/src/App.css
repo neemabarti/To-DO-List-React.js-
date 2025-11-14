@@ -1,0 +1,64 @@
+/* Main container */
+.App {
+  text-align: center;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #e3f2fd;
+  min-height: 100vh;
+}
+
+/* Form styling */
+form {
+  gap: 30px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+form input,
+form button {
+  padding: 10px 14px;
+  font-size: 18px;
+}
+
+/* Remove default list bullets */
+.outerdiv ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Center everything inside li */
+.todo-item {
+  background-color: #e0f7fa;
+  padding: 15px;
+  margin: 10px auto;
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px; /* equal spacing between bullet, text, × */
+
+  width: fit-content; /* shrink box around content */
+  font-size: 20px;
+}
+
+/* Custom bullet */
+.bullet {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+/* Delete button */
+.delete-btn {
+  color: red;
+  font-size: 26px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  transform: scale(1.2);
+}
