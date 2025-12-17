@@ -24,6 +24,7 @@ This project helps users add, view, and delete tasks with an elegant and minimal
 ---
 
 ## 📂 Project Structure
+```text
 todoweb/
 │── public/
 │── src/
@@ -33,7 +34,7 @@ todoweb/
 │ └── components (optional)
 │── package.json
 ---
-
+```
 ## 💡 How It Works
 
 - Type a task in the input box  
