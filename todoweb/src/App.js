@@ -1,71 +1,71 @@
+import { useReducer, useEffect, useState } from "react";
 import "./App.css";
-import { useState } from "react";
+
+import { todoReducer } from "./reducer/todoreducer";
+import { loadTodos, saveTodos } from "./utils/storage";
+
+import TodoList from "./components/TodoList";
+import Filters from "./components/Filters";
 
 function App() {
-  const [todolist, setTodolist] = useState([]);
+  const [todos, dispatch] = useReducer(todoReducer, [], loadTodos);
+  const [filter, setFilter] = useState("ALL");
 
-  const saveTodolist = (event) => {
-    event.preventDefault();
-    const toname = event.target.toname.value.trim();
-    if (!toname) return;
+  useEffect(() => {
+    saveTodos(todos);
+  }, [todos]);
 
-    if (!todolist.includes(toname)) {
-      setTodolist([...todolist, toname]);
-    } else {
-      alert("Task already exists");
-    }
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "ACTIVE") return !todo.completed;
+    if (filter === "COMPLETED") return todo.completed;
+    return true;
+  });
 
-    event.target.reset();
-  };
+  const addTodo = (e) => {
+    e.preventDefault();
 
-  const deleteItem = (itemToDelete) => {
-    setTodolist(todolist.filter((item) => item !== itemToDelete));
+    const text = e.target.todo.value.trim();
+    if (!text) return;
+
+   dispatch({
+  type: "ADD_TASK",
+  payload: {
+    id: Date.now(),
+    text,
+    completed: false,
+    createdAt: new Date().toISOString(), 
+  },
+});
+
+
+
+    e.target.reset();
   };
 
   return (
-    <div className="App">
-      <h1>TO-DO LIST APP</h1>
+    <div className="page">
+      <div className="app-card App">
+        <h1>To-Do List</h1>
 
-      <form onSubmit={saveTodolist}>
-        <input type="text" name="toname" placeholder="Enter task here" />
-        <button type="submit">Add</button>
-      </form>
+        <form onSubmit={addTodo} className="todo-form">
+          <input
+            name="todo"
+            placeholder="Enter task"
+            autoComplete="off"
+          />
+          <button type="submit">Add</button>
+        </form>
 
-      {/* IMPORTANT: outerdiv wrapper */}
-      <div className="outerdiv">
-        <ul>
-          {todolist.map((value) => (
-            <TodolistItem
-              key={value}
-              value={value}
-              onDelete={deleteItem}
-            />
-          ))}
-        </ul>
+        <Filters
+          filter={filter}
+          setFilter={setFilter}
+          onClear={() => dispatch({ type: "CLEAR_COMPLETED" })}
+        />
+
+        <TodoList todos={filteredTodos} dispatch={dispatch} />
       </div>
     </div>
   );
 }
 
 export default App;
-
-/* UPDATED TODO ITEM */
-function TodolistItem({ value, onDelete }) {
-  return (
-    <li className="todo-item">
-      <span className="bullet">•</span>
-      <span className="task-text">{value}</span>
-      <span className="delete-btn" onClick={() => onDelete(value)}>
-        ×
-      </span>
-      
-    </li>
-  );
-}
-
-
-
-
-
-
-
